@@ -6,7 +6,8 @@ ARG WindowsServerCoreRepo=mcr.microsoft.com/windows/servercore
 # As this is a multi-stage build, this stage will eventually be thrown away
 FROM ${WindowsServerCoreRepo}:${fromTag} AS installer-env
 
-RUN powershell `
-        -NoLogo `
-        -NoProfile `
-        -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+ADD https://chocolatey.org/7za.exe C:\7za.exe
+
+ADD https://chocolatey.org/api/v2/package/chocolatey/0.10.15 C:\choco.zip
+
+RUN C:\7za.exe x -o"C:\unzip" -bd -y "C:\choco.zip"

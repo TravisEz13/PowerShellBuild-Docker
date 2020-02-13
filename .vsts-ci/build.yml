@@ -1,4 +1,17 @@
 name: $(Date:yyyyMMdd)$(Rev:.rrr)
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - release/*
+    - feature/*
+pr:
+  branches:
+    include:
+    - master
+    - release/*
+    - feature/*
 
 jobs:
 - job: build
@@ -7,9 +20,6 @@ jobs:
     name: PowerShell
 
   steps:
-  - powershell: |
-      Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    displayName: Install Choco
   - task: Docker@2
     displayName: build
     inputs:
