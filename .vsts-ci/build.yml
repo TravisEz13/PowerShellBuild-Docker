@@ -1,0 +1,14 @@
+name: $(Date:yyyyMMdd)$(Rev:.rrr)
+
+pool:
+  name: PowerShell
+steps:
+- task: Docker@2
+  displayName: buildAndPush
+  inputs:
+    containerRegistry: travisez13
+    repository: 'travisez13/powershell_build_base'
+    Dockerfile: powershell/build/base/Dockerfile
+    tags: |
+     latest
+     $(Build.BuildNumber)
