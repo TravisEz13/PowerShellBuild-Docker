@@ -14,7 +14,7 @@ pr:
     - feature/*
 
 jobs:
-- job: build
+- job: build_2016
 
   pool:
     name: PowerShell
@@ -26,6 +26,21 @@ jobs:
       containerRegistry: travisez13
       repository: 'travisez13/powershell_build_base'
       Dockerfile: powershell/build/base/Dockerfile
+      tags: |
+        latest
+        $(Build.BuildNumber)
+- job: build_2019
+
+  pool:
+    vmImage: windows-2019
+
+  steps:
+  - task: Docker@2
+    displayName: build
+    inputs:
+      containerRegistry: travisez13
+      repository: 'travisez13/powershell_build_base2019'
+      Dockerfile: powershell/build/2019/Dockerfile
       tags: |
         latest
         $(Build.BuildNumber)
