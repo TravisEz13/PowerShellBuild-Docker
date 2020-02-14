@@ -17,13 +17,13 @@ jobs:
 - job: build_2016
 
   pool:
-    name: PowerShell
+    vmImage: vs2017-win2016
 
   steps:
   - task: Docker@2
     displayName: build
     inputs:
-      containerRegistry: travisez13
+      command: build
       repository: 'travisez13/powershell_build_base'
       Dockerfile: powershell/build/base/Dockerfile
       tags: |
@@ -38,7 +38,7 @@ jobs:
   - task: Docker@2
     displayName: build
     inputs:
-      containerRegistry: travisez13
+      command: build
       repository: 'travisez13/powershell_build_base2019'
       Dockerfile: powershell/build/2019/Dockerfile
       tags: |
