@@ -15,6 +15,7 @@ pr:
 
 jobs:
 - job: build_2016_mscodehub
+  condition: eq(variables['collection_name'], 'mscodehub')
 
   pool:
     name: PowerShell
