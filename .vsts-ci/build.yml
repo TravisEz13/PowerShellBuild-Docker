@@ -29,4 +29,4 @@ jobs:
   parameters:
     jobName: build_2019
     vmImage: windows-2019
-    arguments: --build-arg fromTag=ltsc2016
+    dockerfile: powershell/build/2019/Dockerfile

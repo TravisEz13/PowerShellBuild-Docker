@@ -4,7 +4,7 @@ parameters:
   jobName: ''
   poolName: ''
   vmImage: ''
-  arguments: --build-arg fromTag=ltsc2016
+  dockerfile: powershell/build/base/Dockerfile
 jobs:
 - job: ${{ parameters.jobName }}
   condition: ${{ parameters.condition }}
@@ -25,7 +25,7 @@ jobs:
     inputs:
       command: build
       repository: 'travisez13/powershell_build_base'
-      Dockerfile: powershell/build/base/Dockerfile
+      Dockerfile: ${{ parameters.dockerfile }}
       arguments: ${{ parameters.arguments }}
       tags: |
         latest
