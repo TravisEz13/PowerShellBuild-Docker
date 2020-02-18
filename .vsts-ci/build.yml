@@ -14,12 +14,32 @@ pr:
     - feature/*
 
 jobs:
-- job: build_2016
+- job: build_2016_mscodehub
+
+  pool:
+    name: PowerShell
+
+  steps:
+  - powershell: docker info
+    displayName: Get docker info
+  - task: Docker@2
+    displayName: build
+    inputs:
+      command: build
+      repository: 'travisez13/powershell_build_base'
+      Dockerfile: powershell/build/base/Dockerfile
+      tags: |
+        latest
+        $(Build.BuildNumber)
+
+- job: build_2016_hosted
 
   pool:
     vmImage: vs2017-win2016
 
   steps:
+  - powershell: docker info
+    displayName: Get docker info
   - task: Docker@2
     displayName: build
     inputs:
@@ -35,6 +55,8 @@ jobs:
     vmImage: windows-2019
 
   steps:
+  - powershell: docker info
+    displayName: Get docker info
   - task: Docker@2
     displayName: build
     inputs:
