@@ -14,56 +14,19 @@ pr:
     - feature/*
 
 jobs:
-- job: build_2016_mscodehub
-  condition: eq(variables['collection_name'], 'mscodehub')
+- template: ./templates/job.yml
+  parameters:
+    jobName: build_2016_mscodehub
+    condition: eq(variables['collection_name'], 'mscodehub')
+    poolName: PowerShell
 
-  pool:
-    name: PowerShell
-
-  steps:
-  - powershell: docker info
-    displayName: Get docker info
-  - task: Docker@2
-    displayName: build
-    inputs:
-      command: build
-      repository: 'travisez13/powershell_build_base'
-      Dockerfile: powershell/build/base/Dockerfile
-      tags: |
-        latest
-        $(Build.BuildNumber)
-
-- job: build_2016_hosted
-
-  pool:
+- template: ./templates/job.yml
+  parameters:
+    jobName: build_2016_hosted
     vmImage: vs2017-win2016
 
-  steps:
-  - powershell: docker info
-    displayName: Get docker info
-  - task: Docker@2
-    displayName: build
-    inputs:
-      command: build
-      repository: 'travisez13/powershell_build_base'
-      Dockerfile: powershell/build/base/Dockerfile
-      tags: |
-        latest
-        $(Build.BuildNumber)
-- job: build_2019
-
-  pool:
+- template: ./templates/job.yml
+  parameters:
+    jobName: build_2019
     vmImage: windows-2019
-
-  steps:
-  - powershell: docker info
-    displayName: Get docker info
-  - task: Docker@2
-    displayName: build
-    inputs:
-      command: build
-      repository: 'travisez13/powershell_build_base2019'
-      Dockerfile: powershell/build/2019/Dockerfile
-      tags: |
-        latest
-        $(Build.BuildNumber)
+    arguments: --build-arg fromTag=ltsc2016

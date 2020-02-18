@@ -1,0 +1,32 @@
+#docker system prune --all --volumes --force
+parameters:
+  condition: always()
+  jobName: ''
+  poolName: ''
+  vmImage: ''
+  arguments: --build-arg fromTag=ltsc2016
+jobs:
+- job: ${{ parameters.jobName }}
+  condition: ${{ parameters.condition }}
+
+  pool:
+    ${{ if ne(parameters.poolName, '') }}:
+      name: ${{ parameters.poolName }}
+    ${{ if ne(parameters.vmImage, '') }}:
+      vmImage: ${{ parameters.vmImage }}
+
+  steps:
+  - powershell: docker info
+    displayName: Get docker info
+  # - powershell: docker system prune --all --volumes --force
+  #   displayName: docker system prune --all --volumes --force
+  - task: Docker@2
+    displayName: build
+    inputs:
+      command: build
+      repository: 'travisez13/powershell_build_base'
+      Dockerfile: powershell/build/base/Dockerfile
+      arguments: ${{ parameters.arguments }}
+      tags: |
+        latest
+        $(Build.BuildNumber)
