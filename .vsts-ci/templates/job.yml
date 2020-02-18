@@ -1,11 +1,12 @@
-#docker system prune --all --volumes --force
 parameters:
   condition: always()
   jobName: ''
   poolName: ''
   vmImage: ''
   dockerfile: powershell/build/base/Dockerfile
+
 jobs:
+
 - job: ${{ parameters.jobName }}
   condition: ${{ parameters.condition }}
 
@@ -18,8 +19,13 @@ jobs:
   steps:
   - powershell: docker info
     displayName: Get docker info
+
+  - powershell: (Get-ComputerInfo).WindowsBuildLabEx
+    displayName: Get WindowsBuildLabEx
+
   # - powershell: docker system prune --all --volumes --force
   #   displayName: docker system prune --all --volumes --force
+
   - task: Docker@2
     displayName: build
     inputs:
